@@ -13,7 +13,6 @@ interface RegionFilterProps {
 export default function RegionFilter({
   regionButtonLabel,
   region,
-  onRegionChange,
   regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"],
 }: RegionFilterProps) {
   return (

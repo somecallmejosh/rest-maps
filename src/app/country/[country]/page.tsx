@@ -4,6 +4,7 @@ import useSWR from "swr";
 import Image from "next/image";
 import Link from "next/link";
 import { LoadingIcon } from "@/components/Icons";
+import NoResults from "@/components/NoResults";
 import BackLink from "@/components/BackLink";
 
 type GenericObject = Record<string, string>;
@@ -25,8 +26,8 @@ interface Country {
   subRegion: string;
   population: string;
   capital: string[];
-  languages: { [key: string]: string } | {};
-  currencies: Record<string, { name: string; symbol: string }> | {};
+  languages: { [key: string]: string };
+  currencies: Record<string, { name: string; symbol: string }>;
   tld: string[];
 }
 
@@ -62,12 +63,12 @@ export default function About() {
   );
 
   const borderCodes = mainCountry?.borders?.join(",");
-  const { data: borderCountry, error: borderError } = useSWR(
+  const { data: borderCountry } = useSWR(
     `https://restcountries.com/v3.1/alpha?codes=${borderCodes}&fields=cca3,name`,
     borderFetcher,
   );
 
-  if (mainError) return <div>Failed to load</div>;
+  if (mainError) return <NoResults />;
   if (!mainCountry) return <LoadingIcon />;
 
   function GenericValuesList({ data }: GenericValuesListProps) {

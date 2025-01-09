@@ -10,6 +10,7 @@ export const BackArrowIcon: React.FC<Props> = ({ className }) => {
       height="20"
       viewBox="0 0 20 20"
       fill="none"
+      className={className}
     >
       <path
         fillRule="evenodd"
@@ -95,6 +96,7 @@ export const MoonIcon: React.FC<Props> = ({ className }) => {
       height="20"
       viewBox="0 0 20 20"
       fill="none"
+      className={className}
     >
       <path
         fillRule="evenodd"

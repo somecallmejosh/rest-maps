@@ -3,6 +3,7 @@ import { ThemeProvider } from "next-themes";
 import { Nunito_Sans } from "next/font/google";
 import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
+import Link from "next/link";
 
 const nunitoSans = Nunito_Sans({
   variable: "--font-nunito-sans",
@@ -31,13 +32,12 @@ export default function RootLayout({
         >
           <header className="sticky top-0 z-50 bg-white shadow-md dark:bg-[#2B3844] dark:shadow-none">
             <div className="mx-auto flex h-20 w-full max-w-[1280px] items-center justify-between p-4">
-              {/* Using anchor tag to force reload */}
-              <a
+              <Link
                 href="/"
                 className="transform-colors rounded p-2 text-xl font-bold duration-200 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:hover:bg-[#3E4C59]"
               >
                 Where in the world?
-              </a>
+              </Link>
               <ThemeToggle />
             </div>
           </header>
