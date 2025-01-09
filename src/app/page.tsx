@@ -1,101 +1,123 @@
-import Image from "next/image";
+"use client";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import useSWR from "swr";
+import { useDebounce } from "use-debounce";
+import { LoadingIcon, SearchIcon } from "@/components/Icons";
+import NoResults from "@/components/NoResults";
+import RegionFilter from "@/components/RegionFilter";
+import CountryCard from "@/components/CountryCard";
+
+type Country = {
+  cca3: string;
+  flags: { svg: string };
+  name: { common: string };
+  region: string;
+  population: number;
+  capital: string[];
+};
+
+const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
+  fetch(...args).then((res) => {
+    if (!res.ok) {
+      throw new Error("Network response was not OK");
+    }
+    return res.json();
+  });
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [regionButtonLabel, setRegionButtonLabel] =
+    useState("Filter By Region");
+  const [region, setRegion] = useState("");
+  const searchParams = useSearchParams();
+  const regionParam = searchParams.get("region");
+  const initialSearchParam = searchParams.get("search") || "";
+  const [search, setSearch] = useState(initialSearchParam);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const router = useRouter();
+  const fields = "?fields=cca3,flags,name,region,population,capital";
+  const [debouncedSearch] = useDebounce(search, 400);
+
+  const handleRegionChange = (newRegion: string) => {
+    setRegionButtonLabel(newRegion || "Filter By Region");
+    setRegion(newRegion);
+    const params = new URLSearchParams(searchParams.toString());
+    if (newRegion) {
+      params.set("region", newRegion);
+    } else {
+      params.delete("region");
+    }
+    router.push(`?${params.toString()}`);
+  };
+
+  useEffect(() => {
+    if (regionParam) {
+      setRegionButtonLabel(regionParam);
+      setRegion(regionParam);
+      setSearch("");
+    } else {
+      setRegionButtonLabel("Filter By Region");
+      setRegion("");
+    }
+  }, [regionParam]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (debouncedSearch) {
+      params.set("search", debouncedSearch);
+      params.delete("region");
+      setRegion("");
+    } else {
+      params.delete("search");
+    }
+    router.push(`?${params.toString()}`);
+  }, [debouncedSearch]);
+
+  const returnEndpoint = () => {
+    if (regionParam) {
+      return `https://restcountries.com/v3.1/region/${regionParam}${fields}`;
+    } else if (debouncedSearch) {
+      return `https://restcountries.com/v3.1/name/${debouncedSearch}${fields}`;
+    } else {
+      return `https://restcountries.com/v3.1/all${fields}`;
+    }
+  };
+
+  const { data, error } = useSWR(returnEndpoint, fetcher, {
+    keepPreviousData: true,
+  });
+
+  if (error) return <NoResults />;
+  if (!data) return <LoadingIcon />;
+
+  return (
+    <div className="space-y-12">
+      <div className="sticky top-20 z-20 bg-opacity-90 bg-gradient-to-b from-gray-50 to-transparent py-4 backdrop-blur-3xl dark:from-[#202C36] dark:to-transparent">
+        <div className="mx-auto flex w-full max-w-[1280px] flex-wrap justify-between gap-6 px-4 lg:gap-2">
+          <div className="justfy-start relative flex h-12 w-full items-center rounded-lg bg-white pl-4 shadow-md lg:w-2/5 dark:bg-[#2B3844]">
+            <SearchIcon className="relative z-10" />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search for a country..."
+              className="transform-colors absolute inset-0 rounded bg-transparent p-2 pl-10 pr-4 duration-200 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:hover:bg-[#3E4C59]"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+          <div className="relative w-1/2 lg:w-1/3">
+            <RegionFilter
+              regionButtonLabel={regionButtonLabel}
+              region={region}
+              onRegionChange={handleRegionChange}
+            />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      <ul className="relative z-0 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-20 px-4 sm:grid-cols-2 md:grid-cols-3">
+        {data.map((country) => (
+          <CountryCard key={country.cca3} country={country} />
+        ))}
+      </ul>
     </div>
   );
 }

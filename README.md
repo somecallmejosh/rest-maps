@@ -2,6 +2,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Issues with Tailwind Class Sorting?
+https://github.com/tailwindlabs/tailwindcss/discussions/10717
+
 First, run the development server:
 
 ```bash
