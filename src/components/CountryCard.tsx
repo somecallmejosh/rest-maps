@@ -18,9 +18,10 @@ interface Country {
 
 interface CountryCardProps {
   country: Country;
+  index: number;
 }
 
-export default function CountryCard({ country }: CountryCardProps) {
+export default function CountryCard({ country, index }: CountryCardProps) {
   return (
     <li
       key={country.cca3}
@@ -33,6 +34,7 @@ export default function CountryCard({ country }: CountryCardProps) {
           width={50}
           height={30}
           className="h-full w-full rounded-t-lg object-cover"
+          priority={index < 1}
         />
       </div>
       <div className="space-y-1 rounded-b-lg px-6 pb-10 pt-8">

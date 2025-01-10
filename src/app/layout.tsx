@@ -41,7 +41,7 @@ export default function RootLayout({
               <ThemeToggle />
             </div>
           </header>
-          <main className="py-12">{children}</main>
+          <main className="py-6 lg:py-12">{children}</main>
         </ThemeProvider>
       </body>
     </html>
