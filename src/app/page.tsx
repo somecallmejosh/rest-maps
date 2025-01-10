@@ -1,7 +1,7 @@
 "use client";
-import { Suspense } from "react";
-import MyPageContent from "./MyPageContent"; // <— separate file
+import MyPageContent from "./MyPageContent";
 import { LoadingIcon } from "@/components/Icons";
+import { Suspense } from "react";
 
 export default function Page() {
   return (

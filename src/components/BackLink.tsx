@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ReactNode } from "react";
 import { BackArrowIcon } from "@/components/Icons";
+import { ReactNode } from "react";
 
 type MyLinkProps = {
   href: string;

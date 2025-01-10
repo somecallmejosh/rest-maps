@@ -1,12 +1,12 @@
 "use client";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import useSWR from "swr";
-import { useDebounce } from "use-debounce";
-import { LoadingIcon, SearchIcon } from "@/components/Icons";
+import CountryCard from "@/components/CountryCard";
 import NoResults from "@/components/NoResults";
 import RegionFilter from "@/components/RegionFilter";
-import CountryCard from "@/components/CountryCard";
+import useSWR from "swr";
+import { LoadingIcon, SearchIcon } from "@/components/Icons";
+import { useDebounce } from "use-debounce";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 type Country = {
   cca3: string;

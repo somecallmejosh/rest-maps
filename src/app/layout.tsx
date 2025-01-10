@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
-import { Nunito_Sans } from "next/font/google";
-import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
+import type { Metadata } from "next";
+import { Nunito_Sans } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 
 const nunitoSans = Nunito_Sans({
   variable: "--font-nunito-sans",

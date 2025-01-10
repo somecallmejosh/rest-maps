@@ -1,17 +1,13 @@
 "use client";
-import { useParams } from "next/navigation";
-import useSWR from "swr";
+import BackLink from "@/components/BackLink";
+import DataList from "@/components/DataList";
 import Image from "next/image";
 import Link from "next/link";
-import { LoadingIcon } from "@/components/Icons";
 import NoResults from "@/components/NoResults";
-import BackLink from "@/components/BackLink";
-
-type GenericObject = Record<string, string>;
-
-interface GenericValuesListProps {
-  data: GenericObject | undefined;
-}
+import useSWR from "swr";
+import { LoadingIcon } from "@/components/Icons";
+import { numberToLocale } from "@/utils/numberUtils";
+import { useParams } from "next/navigation";
 
 interface Country {
   cca3: string;
@@ -50,10 +46,7 @@ const borderFetcher = (
     .then((res) => res.json())
     .then((data) => data);
 
-const numberToLocale = (number: string) => {
-  return Number(number).toLocaleString();
-};
-export default function About() {
+export default function Country() {
   const params = useParams();
   const countryId = params.country;
 
@@ -71,42 +64,6 @@ export default function About() {
   if (mainError) return <NoResults />;
   if (!mainCountry) return <LoadingIcon />;
 
-  function GenericValuesList({ data }: GenericValuesListProps) {
-    return (
-      <ul className="flex flex-wrap gap-1">
-        {Object.entries(data || {}).map(([key, value], index) => (
-          <li key={key}>
-            {value}
-            {
-              // Add a comma after each value except the last one
-              data && index < Object.keys(data).length - 1 ? "," : ""
-            }
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  function CurrenciesList({
-    currencies,
-  }: {
-    currencies: Record<string, { name: string; symbol: string }>;
-  }) {
-    if (!currencies) return null;
-
-    return (
-      <ul className="flex flex-wrap gap-1">
-        {Object.entries(currencies).map(([code, currency], index) => (
-          <li key={code}>
-            {currency.name}
-            {currencies && index < Object.keys(currencies).length - 1
-              ? ","
-              : ""}
-          </li>
-        ))}
-      </ul>
-    );
-  }
   return (
     <>
       {mainCountry ? (
@@ -128,60 +85,63 @@ export default function About() {
               <h1 className="mb-6 text-3xl font-bold">
                 {mainCountry?.name?.common}
               </h1>
-              <div className="mb-12 columns-2 space-y-2 text-sm">
+              <ul className="mb-12 list-none columns-2 space-y-2 text-sm">
                 {mainCountry?.region && (
-                  <p>
+                  <li>
                     <strong>Region</strong>: {mainCountry?.region}
-                  </p>
+                  </li>
                 )}
                 {mainCountry?.subRegion && (
-                  <p>
+                  <li>
                     <strong>Sub Region</strong>: {mainCountry?.subRegion}
-                  </p>
+                  </li>
                 )}
                 {mainCountry?.population && (
-                  <p>
+                  <li>
                     <strong>Population</strong>:{" "}
                     {numberToLocale(mainCountry?.population)}
-                  </p>
+                  </li>
                 )}
                 {mainCountry?.capital && (
-                  <p>
+                  <li>
                     <strong>Capital</strong>: {mainCountry?.capital}
-                  </p>
+                  </li>
                 )}
-                <div className="break-after-column">
+                <li className="break-after-column">
                   <div className="flex gap-1">
                     <p>
                       <strong>Languages</strong>:
                     </p>
-                    <GenericValuesList data={mainCountry?.languages} />
+                    <DataList
+                      data={mainCountry?.languages}
+                      getValue={(value) => value}
+                    />
                   </div>
-                </div>
-                <div className="flex gap-1">
+                </li>
+                <li className="flex gap-1">
                   <p>
                     <strong>Currencies</strong>:
                   </p>
-                  <CurrenciesList currencies={mainCountry?.currencies} />
-                </div>
-                <div className="flex flex-wrap gap-1">
+                  <DataList
+                    data={mainCountry?.currencies}
+                    getValue={(value) => value.name}
+                  />
+                </li>
+                <li className="flex flex-wrap gap-1">
                   <p>
                     <strong>Top Level Domain</strong>:
                   </p>
-                  <ul className=".flex.flex-wrap.gap-1">
-                    {mainCountry?.tld?.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                  <DataList
+                    data={mainCountry?.tld}
+                    getValue={(value) => value}
+                  />
+                </li>
+              </ul>
               {borderCodes && (
                 <div className="flex flex-wrap gap-2">
-                  <div>
-                    <p>
-                      <strong>Border Countries</strong>:
-                    </p>
-                  </div>
+                  <p>
+                    <strong>Border Countries</strong>:
+                  </p>
                   <ul className="flex flex-wrap gap-x-2 gap-y-4">
                     {borderCountry?.map((bc: BorderCountry) => (
                       <li key={bc?.cca3}>

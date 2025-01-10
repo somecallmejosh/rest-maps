@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { numberToLocale } from "@/utils/numberUtils";
 
 interface Country {
   cca3: string;
@@ -20,10 +21,6 @@ interface CountryCardProps {
 }
 
 export default function CountryCard({ country }: CountryCardProps) {
-  const numberToLocale = (number: number) => {
-    return Number(number).toLocaleString();
-  };
-
   return (
     <li
       key={country.cca3}

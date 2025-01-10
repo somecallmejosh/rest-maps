@@ -1,5 +1,6 @@
 import BackLink from "./BackLink";
 import { GlobeIcon } from "./Icons";
+
 export default function NoResults() {
   return (
     <div className="mx-auto w-full max-w-[1280px] space-y-6 px-4">

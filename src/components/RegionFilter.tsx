@@ -1,7 +1,7 @@
 "use client";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import Link from "next/link";
 import { ChevronDownIcon } from "@/components/Icons";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 interface RegionFilterProps {
   regionButtonLabel: string;
