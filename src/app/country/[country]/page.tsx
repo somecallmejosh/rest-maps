@@ -55,9 +55,14 @@ export default function Country() {
     fetcher,
   );
 
-  const borderCodes = mainCountry?.borders?.join(",");
+  const borderCodes = mainCountry?.borders?.length
+    ? mainCountry.borders.join(",")
+    : null;
+
   const { data: borderCountry } = useSWR(
-    `https://restcountries.com/v3.1/alpha?codes=${borderCodes}&fields=cca3,name`,
+    borderCodes
+      ? `https://restcountries.com/v3.1/alpha?codes=${borderCodes}&fields=cca3,name`
+      : null,
     borderFetcher,
   );
 
