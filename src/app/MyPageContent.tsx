@@ -110,7 +110,6 @@ const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
       setPage((prev) => prev + 1);
     };
 
-    if (error) return <NoResults />;
     if (!data) return <LoadingIcon />;
 
     return (
@@ -136,25 +135,35 @@ const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
             </div>
           </div>
         </div>
-        <ul className="relative z-0 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-20 px-4 sm:grid-cols-2 md:grid-cols-3">
-          {displayedCountries.map((country, index) => (
-            <CountryCard key={country.cca3} country={country} index={index} />
-          ))}
-        </ul>
-        {displayedCountries.length < data.length && (
-          <div className="mx-auto flex max-w-[1280px] items-center justify-between px-4">
-            <p>
-              Showing {displayedCountries.length} of {data.length} coutries
-            </p>
-            {displayedCountries.length + CHUNK_SIZE <= data.length && (
-              <button
-                onClick={handleLoadMore}
-                className="transform-colors rounded p-2 text-xl font-bold duration-200 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:hover:bg-[#3E4C59]"
-              >
-                Load the next {CHUNK_SIZE} countries
-              </button>
+        {error && <NoResults />}
+        {!error && (
+          <>
+            <ul className="relative z-0 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-20 px-4 sm:grid-cols-2 md:grid-cols-3">
+              {displayedCountries.map((country, index) => (
+                <CountryCard
+                  key={country.cca3}
+                  country={country}
+                  index={index}
+                />
+              ))}
+            </ul>
+            {displayedCountries.length < data.length && (
+              <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between px-4">
+                <p className="text-sm">
+                  Showing <strong>{displayedCountries.length}</strong> of{" "}
+                  <strong>{data.length}</strong> coutries
+                </p>
+                {displayedCountries.length + CHUNK_SIZE <= data.length && (
+                  <button
+                    onClick={handleLoadMore}
+                    className="transform-colors rounded bg-gray-100 px-4 py-2 font-bold duration-200 hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:hover:bg-[#3E4C59]"
+                  >
+                    Load the next {CHUNK_SIZE} countries
+                  </button>
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
       </div>
     );
