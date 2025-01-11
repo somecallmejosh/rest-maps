@@ -67,9 +67,9 @@ export default function Country() {
   return (
     <>
       {mainCountry ? (
-        <div className="mx-auto w-full max-w-[1280px] space-y-12 p-4">
+        <div className="mx-auto w-full max-w-[1280px] space-y-6 p-4 lg:space-y-12">
           <BackLink href="/">Back</BackLink>
-          <div className="relative grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-32">
+          <div className="relative grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-32">
             {mainCountry?.flags?.svg && (
               <div>
                 <div className="aspect-[35/26]">
