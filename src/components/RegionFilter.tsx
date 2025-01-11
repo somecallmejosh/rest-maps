@@ -13,7 +13,7 @@ interface RegionFilterProps {
 export default function RegionFilter({
   regionButtonLabel,
   region,
-  regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"],
+  regions = ["Africa", "Americas", "Antarctic", "Asia", "Europe", "Oceania"],
 }: RegionFilterProps) {
   return (
     <Menu>
@@ -23,7 +23,7 @@ export default function RegionFilter({
       </MenuButton>
       <MenuItems
         anchor="bottom end"
-        className="z-20 w-1/3 origin-top-left space-y-1 rounded-xl border bg-white p-1 px-4 py-6 text-sm/6 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 lg:w-52 lg:origin-top-right dark:border-[#2B3844] dark:bg-[#2B3844]"
+        className="z-20 w-1/3 origin-top-left space-y-1 rounded-xl border bg-white p-1 px-4 py-6 text-sm/6 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 dark:border-[#2B3844] dark:bg-[#2B3844] lg:w-52 lg:origin-top-right"
       >
         {regions.map((region) => (
           <MenuItem key={region}>
