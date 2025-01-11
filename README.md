@@ -1,39 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RESTful API Consumption with Next.js, and Typescript
 
-## Getting Started
+- [Live Site: ](https://somecallmejosh-rest-maps.netlify.app/)
 
-Issues with Tailwind Class Sorting?
-https://github.com/tailwindlabs/tailwindcss/discussions/10717
+## Project specs
+1. Build layout in accordance with Figma design files.
+  - See all countries from the API on the homepage
+  - Click on a country to see more detailed information on a separate page
+  - Click through to the border countries on the detail page
+1. Allow for API based search and filter functionality.
+  - Use https://restcountries.com/#rest-countries API to display lists of countries, and country data.
+  - Search for a country using an `input` field
+  - Filter countries by region
+1. Toggle the color scheme between light and dark mode *(optional)*
 
-First, run the development server:
+## My process
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Built with
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Semantic HTML5 markup
+- TailwindCSS
+- Headless UI for fully accessible dropdown menu
+- Mobile-first workflow
+- [Next.js](https://nextjs.org/) - React framework
+- [Typescript](https://www.typescriptlang.org/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### UX & A11Y Polish Suggestions that were not part of original specification
+- Reset focus to first new item after "load next 9 countries" button is pushed.
+- Scroll new countries into view.
+- Create keyboard shortcut for loading new countries
+- Create keyboard shortcut for setting focus on search input
+- Create keyboard for color mode change
+- Create modal to display keyboard shortcuts
+- Create keyboard shortcut to display keyboard shortcuts modal
+- Create skip to link in header
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tests
+- Coming up soon
