@@ -79,6 +79,9 @@ export default function Country() {
                     width={300}
                     height={200}
                     className="size-full rounded-lg object-cover"
+                    priority
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20200'%3E%3C/svg%3E"
                   />
                 </div>
               </div>

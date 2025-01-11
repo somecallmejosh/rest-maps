@@ -35,6 +35,8 @@ export default function CountryCard({ country, index }: CountryCardProps) {
           height={30}
           className="h-full w-full rounded-t-lg object-cover"
           priority={index < 1}
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20200'%3E%3C/svg%3E"
         />
       </div>
       <div className="space-y-1 rounded-b-lg px-6 pb-10 pt-8">
