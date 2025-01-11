@@ -69,18 +69,20 @@ export default function Country() {
       {mainCountry ? (
         <div className="mx-auto w-full max-w-[1280px] space-y-12 p-4">
           <BackLink href="/">Back</BackLink>
-          <div className="relative grid gap-12 overflow-auto lg:grid-cols-2 lg:items-center lg:gap-32">
-            <div>
-              <div className="aspect-[35/26]">
-                <Image
-                  src={mainCountry?.flags?.svg || ""}
-                  alt={mainCountry?.name?.common || "Country flag"}
-                  width={300}
-                  height={200}
-                  className="size-full rounded-lg object-cover"
-                />
+          <div className="relative grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-32">
+            {mainCountry?.flags?.svg && (
+              <div>
+                <div className="aspect-[35/26]">
+                  <Image
+                    src={mainCountry?.flags?.svg}
+                    alt={`${mainCountry?.name?.common} flag`}
+                    width={300}
+                    height={200}
+                    className="size-full rounded-lg object-cover"
+                  />
+                </div>
               </div>
-            </div>
+            )}
             <div className="flex flex-col">
               <h1 className="mb-6 text-3xl font-bold">
                 {mainCountry?.name?.common}

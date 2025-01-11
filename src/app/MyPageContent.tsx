@@ -25,7 +25,7 @@ const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
     return res.json();
   });
 
-  const CHUNK_SIZE = 12;
+  const CHUNK_SIZE = 9;
 
   export default function MyPageContent() {
     const [regionButtonLabel, setRegionButtonLabel] =
@@ -148,15 +148,15 @@ const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
               ))}
             </ul>
             {displayedCountries.length < data.length && (
-              <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between px-4">
-                <p className="text-sm">
+              <div className="mx-auto flex max-w-[1280px] flex-col flex-wrap items-center justify-between gap-4 px-4 lg:flex-row">
+                <p className="text-center text-sm lg:text-left">
                   Showing <strong>{displayedCountries.length}</strong> of{" "}
                   <strong>{data.length}</strong> coutries
                 </p>
                 {displayedCountries.length + CHUNK_SIZE <= data.length && (
                   <button
                     onClick={handleLoadMore}
-                    className="transform-colors rounded bg-gray-100 px-4 py-2 font-bold duration-200 hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:hover:bg-[#3E4C59]"
+                    className="transform-colors flex w-full justify-center rounded bg-[#2B3844] px-4 py-2 text-center font-bold text-white duration-200 hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:hover:bg-[#3E4C59] lg:w-auto"
                   >
                     Load the next {CHUNK_SIZE} countries
                   </button>
