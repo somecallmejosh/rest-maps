@@ -30,7 +30,7 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem={false}
         >
-          <header className="sticky top-0 z-50 bg-white shadow-md dark:bg-[#2B3844] dark:shadow-none">
+          <header className="z-50 bg-white shadow-md dark:bg-[#2B3844] dark:shadow-none">
             <div className="mx-auto flex h-20 w-full max-w-[1280px] items-center justify-between p-4">
               <Link
                 href="/"

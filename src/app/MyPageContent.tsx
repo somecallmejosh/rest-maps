@@ -114,9 +114,9 @@ const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
 
     return (
       <div className="space-y-6 lg:space-y-12">
-        <div className="sticky top-20 z-20 bg-opacity-90 bg-gradient-to-b from-gray-50 to-transparent py-4 backdrop-blur-3xl dark:from-[#202C36] dark:to-transparent">
+        <div className="sticky top-0 z-20 bg-opacity-90 bg-gradient-to-b from-gray-50 to-transparent py-4 backdrop-blur-3xl dark:from-[#202C36] dark:to-transparent">
           <div className="mx-auto flex w-full max-w-[1280px] flex-wrap justify-between gap-6 px-4 lg:gap-2">
-            <div className="justfy-start relative flex h-12 w-full items-center rounded-lg bg-white pl-4 shadow-md lg:w-2/5 dark:bg-[#2B3844]">
+            <div className="justfy-start relative flex h-12 w-full items-center rounded-lg bg-white pl-4 shadow-md dark:bg-[#2B3844] lg:w-2/5">
               <SearchIcon className="relative z-10" />
               <input
                 type="search"
@@ -138,7 +138,7 @@ const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
         {error && <NoResults />}
         {!error && (
           <>
-            <ul className="relative z-0 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-20 px-4 sm:grid-cols-2 md:grid-cols-3">
+            <ul className="relative z-0 mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-6 px-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-20">
               {displayedCountries.map((country, index) => (
                 <CountryCard
                   key={country.cca3}
