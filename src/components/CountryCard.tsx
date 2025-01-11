@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { DefinitionListItemCard } from "@/components/DefinitionList";
 import { numberToLocale } from "@/utils/numberUtils";
 
 interface Country {
@@ -39,19 +40,19 @@ export default function CountryCard({ country, index }: CountryCardProps) {
           blurDataURL="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20200'%3E%3C/svg%3E"
         />
       </div>
-      <div className="space-y-1 rounded-b-lg px-6 pb-10 pt-8">
+      <div className="space-y-2 rounded-b-lg px-6 pb-10 pt-8">
         <h2 className="text-xl font-bold">{country.name.common}</h2>
-        <p>
-          <span className="font-semibold">Region</span>: {country.region}
-        </p>
-        <p>
-          <span className="font-semibold">Population</span>:{" "}
-          {numberToLocale(country.population)}
-        </p>
-        <p>
-          <span className="font-semibold">Capital</span>:{" "}
-          {country.capital.join(", ")}
-        </p>
+        <dl className="space-y-1.5">
+          <DefinitionListItemCard label="Region" text={country.region} />
+          <DefinitionListItemCard
+            label="Population"
+            text={numberToLocale(country.population)}
+          />
+          <DefinitionListItemCard
+            label="Capital"
+            text={country.capital.join(", ")}
+          />
+        </dl>
       </div>
       <Link
         href={`/country/${country.cca3}`}

@@ -5,9 +5,23 @@ import Image from "next/image";
 import Link from "next/link";
 import NoResults from "@/components/NoResults";
 import useSWR from "swr";
+import {
+  DefinitionList,
+  DefinitionListItem,
+} from "@/components/DefinitionList";
 import { LoadingIcon } from "@/components/Icons";
 import { numberToLocale } from "@/utils/numberUtils";
 import { useParams } from "next/navigation";
+
+type NativeNameItem = {
+  official: string;
+  common: string;
+};
+
+type Currencies = {
+  name: string;
+  symbol: string;
+};
 
 interface Country {
   cca3: string;
@@ -16,6 +30,7 @@ interface Country {
   };
   name: {
     common: string;
+    nativeName: Record<string, NativeNameItem>;
   };
   borders: string[];
   region: string;
@@ -23,7 +38,7 @@ interface Country {
   population: string;
   capital: string[];
   languages: { [key: string]: string };
-  currencies: Record<string, { name: string; symbol: string }>;
+  currencies: Record<string, Currencies>;
   tld: string[];
 }
 
@@ -95,76 +110,83 @@ export default function Country() {
               <h1 className="mb-6 text-3xl font-bold">
                 {mainCountry?.name?.common}
               </h1>
-              <ul className="mb-12 list-none columns-2 space-y-2 text-sm">
-                {mainCountry?.region && (
-                  <li>
-                    <strong>Region</strong>: {mainCountry?.region}
-                  </li>
-                )}
-                {mainCountry?.subRegion && (
-                  <li>
-                    <strong>Sub Region</strong>: {mainCountry?.subRegion}
-                  </li>
-                )}
-                {mainCountry?.population && (
-                  <li>
-                    <strong>Population</strong>:{" "}
-                    {numberToLocale(mainCountry?.population)}
-                  </li>
-                )}
-                {mainCountry?.capital && (
-                  <li>
-                    <strong>Capital</strong>: {mainCountry?.capital}
-                  </li>
-                )}
-                <li className="break-after-column">
-                  <div className="flex gap-1">
-                    <p>
-                      <strong>Languages</strong>:
-                    </p>
+              <div className="mb-12 grid gap-20 lg:grid-cols-2">
+                <DefinitionList>
+                  <DefinitionListItem label="Native Name">
                     <DataList
-                      data={mainCountry?.languages}
-                      getValue={(value) => value}
+                      data={mainCountry?.name?.nativeName}
+                      getValue={(value) => value.common}
                     />
-                  </div>
-                </li>
-                <li className="flex gap-1">
-                  <p>
-                    <strong>Currencies</strong>:
-                  </p>
-                  <DataList
-                    data={mainCountry?.currencies}
-                    getValue={(value) => value.name}
-                  />
-                </li>
-                <li className="flex flex-wrap gap-1">
-                  <p>
-                    <strong>Top Level Domain</strong>:
-                  </p>
-                  <DataList
-                    data={mainCountry?.tld}
-                    getValue={(value) => value}
-                  />
-                </li>
-              </ul>
+                  </DefinitionListItem>
+                  {mainCountry?.population && (
+                    <DefinitionListItem
+                      label="Population"
+                      text={numberToLocale(mainCountry?.population)}
+                    />
+                  )}
+                  {mainCountry?.region && (
+                    <DefinitionListItem
+                      label="Region"
+                      text={mainCountry.region}
+                    />
+                  )}
+                  {mainCountry?.subRegion && (
+                    <DefinitionListItem
+                      label="Sub Region"
+                      text={numberToLocale(mainCountry?.subRegion)}
+                    />
+                  )}
+                  {mainCountry?.capital && (
+                    <DefinitionListItem
+                      label="Capital"
+                      text={mainCountry?.capital.join(", ")}
+                    />
+                  )}
+                </DefinitionList>
+                <DefinitionList>
+                  {mainCountry?.tld && (
+                    <DefinitionListItem label="Top Level Domain">
+                      <DataList
+                        data={mainCountry?.tld}
+                        getValue={(value) => value}
+                      />
+                    </DefinitionListItem>
+                  )}
+                  {mainCountry?.currencies && (
+                    <DefinitionListItem label="Currencies">
+                      <DataList
+                        data={mainCountry?.currencies}
+                        getValue={(value) => value.name}
+                      />
+                    </DefinitionListItem>
+                  )}
+                  {mainCountry?.languages && (
+                    <DefinitionListItem label="Languages">
+                      <DataList
+                        data={mainCountry?.languages}
+                        getValue={(value) => value}
+                      />
+                    </DefinitionListItem>
+                  )}
+                </DefinitionList>
+              </div>
               {borderCodes && (
-                <div className="flex flex-wrap gap-2">
-                  <p>
-                    <strong>Border Countries</strong>:
-                  </p>
-                  <ul className="flex flex-wrap gap-x-2 gap-y-4">
-                    {borderCountry?.map((bc: BorderCountry) => (
-                      <li key={bc?.cca3}>
-                        <Link
-                          className="rounded-md bg-white px-2 py-1 shadow transition-colors duration-200 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:bg-[#2B3844] dark:text-white dark:hover:bg-[#3E4C59]"
-                          href={`/country/${bc?.cca3}`}
-                        >
-                          {bc?.name?.common}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <DefinitionList>
+                  <DefinitionListItem label="Border Countries">
+                    <ul className="flex flex-wrap gap-x-2 gap-y-4 pt-2 lg:pt-0">
+                      {borderCountry?.map((bc: BorderCountry) => (
+                        <li key={bc?.cca3}>
+                          <Link
+                            className="rounded-md bg-white px-2 py-1 shadow transition-colors duration-200 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:bg-[#2B3844] dark:text-white dark:hover:bg-[#3E4C59]"
+                            href={`/country/${bc?.cca3}`}
+                          >
+                            {bc?.name?.common}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </DefinitionListItem>
+                </DefinitionList>
               )}
             </div>
           </div>

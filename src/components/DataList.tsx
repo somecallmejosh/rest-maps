@@ -9,7 +9,7 @@ export default function DataList<T>({ data, getValue }: DataListProps<T>) {
   const entries = Object.entries(data);
 
   return (
-    <ul className="flex flex-wrap gap-1">
+    <ul className="flex flex-wrap gap-x-1">
       {entries.map(([key, value], index) => (
         <li key={key}>
           {getValue(value, key)}
