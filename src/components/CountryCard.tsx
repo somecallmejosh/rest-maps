@@ -3,25 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { DefinitionListItemCard } from "@/components/DefinitionList";
 import { forwardRef } from "react";
-import { numberToLocale } from "@/utils/numberUtils";
-
-interface Country {
-  cca3: string;
-  flags: {
-    svg: string;
-  };
-  name: {
-    common: string;
-  };
-  region: string;
-  population: number;
-  capital: string[];
-}
-
-interface CountryCardProps {
-  country: Country;
-  index: number;
-}
+import { numberToLocale } from "@/lib/numberUtils";
+import type { CountryCardProps } from "@/types/types";
 
 /**
  * Wrap the component in `forwardRef`, and forward the ref to the <li>.

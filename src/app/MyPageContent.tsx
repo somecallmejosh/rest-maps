@@ -7,17 +7,9 @@ import { LoadingIcon, SearchIcon } from "@/components/Icons";
 import { useDebounce } from "use-debounce";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import type { Countries } from "@/types/types";
 
-type Country = {
-  cca3: string;
-  flags: { svg: string };
-  name: { common: string };
-  region: string;
-  population: number;
-  capital: string[];
-};
-
-const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
+const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Countries[]> =>
   fetch(...args).then((res) => {
     if (!res.ok) {
       throw new Error("Network response was not OK");
@@ -42,7 +34,7 @@ export default function MyPageContent() {
   const [debouncedSearch] = useDebounce(search, 400);
 
   const [page, setPage] = useState(1);
-  const [displayedCountries, setDisplayedCountries] = useState<Country[]>([]);
+  const [displayedCountries, setDisplayedCountries] = useState<Countries[]>([]);
 
   const countryRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const previousLengthRef = useRef(0);

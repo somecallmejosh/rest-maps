@@ -10,44 +10,9 @@ import {
   DefinitionListItem,
 } from "@/components/DefinitionList";
 import { LoadingIcon } from "@/components/Icons";
-import { numberToLocale } from "@/utils/numberUtils";
+import { numberToLocale } from "@/lib/numberUtils";
 import { useParams } from "next/navigation";
-
-type NativeNameItem = {
-  official: string;
-  common: string;
-};
-
-type Currencies = {
-  name: string;
-  symbol: string;
-};
-
-interface Country {
-  cca3: string;
-  flags: {
-    svg: string;
-  };
-  name: {
-    common: string;
-    nativeName: Record<string, NativeNameItem>;
-  };
-  borders: string[];
-  region: string;
-  subRegion: string;
-  population: string;
-  capital: string[];
-  languages: { [key: string]: string };
-  currencies: Record<string, Currencies>;
-  tld: string[];
-}
-
-interface BorderCountry {
-  cca3: string;
-  name: {
-    common: string;
-  };
-}
+import type { BorderCountry, Country } from "@/types/types";
 
 const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country> =>
   fetch(...args)
