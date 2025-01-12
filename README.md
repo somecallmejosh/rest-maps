@@ -25,14 +25,8 @@
 - [Typescript](https://www.typescriptlang.org/)
 
 ### UX & A11Y Polish Suggestions that were not part of original specification
-- Reset focus to first new item after "load next 9 countries" button is pushed.
-- Scroll new countries into view.
-- Create keyboard shortcut for loading new countries
-- Create keyboard shortcut for setting focus on search input
-- Create keyboard for color mode change
-- Create modal to display keyboard shortcuts
-- Create keyboard shortcut to display keyboard shortcuts modal
-- Create skip to link in header
+- [x] Reset focus to first new item after "load next 9 countries" button is pushed.
+- [x] Scroll new countries into view.
 
 ## Tests
 - Coming up soon

@@ -20,3 +20,8 @@ body {
   background: var(--background);
   font-family: "Nunito Sans", sans-serif;
 }
+
+a:focus,
+a:focus-visible {
+  outline: 2px solid; /* example color */
+}
