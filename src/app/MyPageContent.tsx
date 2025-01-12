@@ -3,19 +3,12 @@ import CountryCard from "@/components/CountryCard";
 import NoResults from "@/components/NoResults";
 import RegionFilter from "@/components/RegionFilter";
 import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 import { LoadingIcon, SearchIcon } from "@/components/Icons";
 import { useDebounce } from "use-debounce";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import type { Countries } from "@/types/types";
-
-const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Countries[]> =>
-  fetch(...args).then((res) => {
-    if (!res.ok) {
-      throw new Error("Network response was not OK");
-    }
-    return res.json();
-  });
 
 const CHUNK_SIZE = 9;
 
@@ -84,7 +77,7 @@ export default function MyPageContent() {
     }
   };
 
-  const { data, error } = useSWR(returnEndpoint, fetcher, {
+  const { data, error } = useSWR<Countries[]>(returnEndpoint, fetcher, {
     keepPreviousData: true,
   });
 

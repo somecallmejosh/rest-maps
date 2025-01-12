@@ -1,52 +1,48 @@
-"use client";
 import BackLink from "@/components/BackLink";
 import DataList from "@/components/DataList";
 import Image from "next/image";
 import Link from "next/link";
-import NoResults from "@/components/NoResults";
-import useSWR from "swr";
 import {
   DefinitionList,
   DefinitionListItem,
 } from "@/components/DefinitionList";
+import { fetcher } from "@/lib/fetcher";
 import { LoadingIcon } from "@/components/Icons";
 import { numberToLocale } from "@/lib/numberUtils";
-import { useParams } from "next/navigation";
 import type { BorderCountry, Country } from "@/types/types";
 
-const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country> =>
-  fetch(...args)
-    .then((res) => res.json())
-    .then((data) => data[0]);
+export default async function Country({
+  params,
+}: {
+  params: { country: string };
+}) {
+  const { country } = await params;
 
-const borderFetcher = (
-  ...args: [RequestInfo, RequestInit?]
-): Promise<BorderCountry[]> =>
-  fetch(...args)
-    .then((res) => res.json())
-    .then((data) => data);
-
-export default function Country() {
-  const params = useParams();
-  const countryId = params.country;
-
-  const { data: mainCountry, error: mainError } = useSWR(
-    `https://restcountries.com/v3.1/alpha?codes=${countryId}&fields=cca3,flags,name,common,region,population,capital,borders,languages,currencies,tld,subregion`,
-    fetcher,
+  // @typescript-eslint/no-explicit-any
+  const mainCountry = await fetcher<Country>(
+    `https://restcountries.com/v3.1/alpha?codes=${country}&fields=cca3,flags,name,common,region,population,capital,borders,languages,currencies,tld,subregion`,
+    {},
+    (data: unknown) => {
+      if (!Array.isArray(data)) {
+        throw new Error(
+          "Expected an array from the API, but got something else.",
+        );
+      }
+      return data[0] as Country;
+    }, // transform function grabbing the first element
   );
 
   const borderCodes = mainCountry?.borders?.length
     ? mainCountry.borders.join(",")
     : null;
 
-  const { data: borderCountry } = useSWR(
-    borderCodes
-      ? `https://restcountries.com/v3.1/alpha?codes=${borderCodes}&fields=cca3,name`
-      : null,
-    borderFetcher,
-  );
+  // Only check for borderCountries if borderCodes is not null
+  const borderCountries = borderCodes
+    ? await fetcher<BorderCountry[]>(
+        `https://restcountries.com/v3.1/alpha?codes=${borderCodes}&fields=cca3,name`,
+      )
+    : [];
 
-  if (mainError) return <NoResults />;
   if (!mainCountry) return <LoadingIcon />;
 
   return (
@@ -139,7 +135,7 @@ export default function Country() {
                 <DefinitionList>
                   <DefinitionListItem label="Border Countries">
                     <ul className="flex flex-wrap gap-x-2 gap-y-4 pt-2 lg:pt-0">
-                      {borderCountry?.map((bc: BorderCountry) => (
+                      {borderCountries?.map((bc: BorderCountry) => (
                         <li key={bc?.cca3}>
                           <Link
                             className="rounded-md bg-white px-2 py-1 shadow transition-colors duration-200 hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:bg-[#2B3844] dark:text-white dark:hover:bg-[#3E4C59]"
