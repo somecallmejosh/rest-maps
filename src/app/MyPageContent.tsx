@@ -115,18 +115,18 @@ const fetcher = (...args: [RequestInfo, RequestInit?]): Promise<Country[]> =>
     return (
       <div className="space-y-6 lg:space-y-12">
         <div className="sticky top-0 z-20 bg-opacity-90 bg-gradient-to-b from-gray-50 to-transparent py-4 backdrop-blur-3xl dark:from-[#202C36] dark:to-transparent">
-          <div className="mx-auto flex w-full max-w-[1280px] flex-wrap justify-between gap-6 px-4 lg:gap-2">
-            <div className="justfy-start relative flex h-12 w-full items-center rounded-lg bg-white pl-4 shadow-md dark:bg-[#2B3844] lg:w-2/5">
+          <div className="mx-auto grid w-full max-w-[1280px] gap-6 px-4 lg:grid-cols-2">
+            <div className="justfy-start relative flex h-[3.5rem] w-full max-w-[30rem] items-center rounded-lg bg-white pl-4 shadow-md dark:bg-[#2B3844]">
               <SearchIcon className="relative z-10" />
               <input
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search for a country..."
-                className="transform-colors absolute inset-0 rounded bg-transparent p-2 pl-10 pr-4 duration-200 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:hover:bg-[#3E4C59]"
+                className="transform-colors absolute inset-0 w-full rounded bg-transparent p-2 pl-10 pr-4 duration-200 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gray-500 dark:hover:bg-[#3E4C59]"
               />
             </div>
-            <div className="relative w-1/2 lg:w-1/3">
+            <div className="flex lg:justify-end">
               <RegionFilter
                 regionButtonLabel={regionButtonLabel}
                 region={region}
