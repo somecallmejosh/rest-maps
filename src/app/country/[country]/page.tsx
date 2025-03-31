@@ -12,11 +12,11 @@ import { numberToLocale } from "@/lib/numberUtils";
 import type { BorderCountry, Country } from "@/types/types";
 
 export default async function Country({
-  params,
+  params: asyncParams,
 }: {
-  params: { country: string };
+  params: Promise<{ country: string }>;
 }) {
-  const { country } = params;
+  const { country } = await asyncParams;
 
   const mainCountry = await fetcher<Country>(
     `https://restcountries.com/v3.1/alpha?codes=${country}&fields=cca3,flags,name,common,region,population,capital,borders,languages,currencies,tld,subregion`,
@@ -38,8 +38,8 @@ export default async function Country({
   // Only check for borderCountries if borderCodes is not null
   const borderCountries = borderCodes
     ? await fetcher<BorderCountry[]>(
-        `https://restcountries.com/v3.1/alpha?codes=${borderCodes}&fields=cca3,name`,
-      )
+      `https://restcountries.com/v3.1/alpha?codes=${borderCodes}&fields=cca3,name`,
+    )
     : [];
 
   if (!mainCountry) return <LoadingIcon />;
