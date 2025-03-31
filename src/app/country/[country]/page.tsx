@@ -16,9 +16,8 @@ export default async function Country({
 }: {
   params: { country: string };
 }) {
-  const { country } = await params;
+  const { country } = params;
 
-  // @typescript-eslint/no-explicit-any
   const mainCountry = await fetcher<Country>(
     `https://restcountries.com/v3.1/alpha?codes=${country}&fields=cca3,flags,name,common,region,population,capital,borders,languages,currencies,tld,subregion`,
     {},
